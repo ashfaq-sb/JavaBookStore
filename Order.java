@@ -95,6 +95,14 @@ public class Order {
         return s;
     }
 
+    //    public String getEachProductDetails() {
+//        String s = "";
+//
+//        for (int i = 0; i < this.getProducts().size(); i++) {
+//            s = "" + this.getProducts().get(i).productDetails();
+//        }
+//        return s;
+    //   }
     public boolean isDispatched() {
         return dispatched;
     }

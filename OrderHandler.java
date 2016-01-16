@@ -57,10 +57,31 @@ public class OrderHandler {
 
     }
 
-    public void addTestObjects(int num) {
-//        for (int i = 0; i < num; i++) {
-//
-//        }
+    public String getPDetails() {
+        Product p;
+        String s = "";
+
+        for (Order anObject : this.object) {
+            int size = anObject.getProducts().size();
+
+            Order o = anObject;
+            boolean once = true;
+            for (int j = 0; j < size; j++) {
+                p = o.getProducts().get(j);
+
+                if (once) {
+                    s = s + "CName CAdress Pid PName PCost PHouse PAuthor";
+                    s = s + o.getC().getCustomerDetails() + " " + p.productDetails() + "\n";
+                    once = false;
+                } else {
+
+                    s = o.getC().getCustomerDetails() + " " + p.productDetails() + "\n";
+                }
+            }
+        }
+
+        return s;
+
     }
 
 }

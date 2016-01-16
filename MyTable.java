@@ -48,6 +48,7 @@ public class MyTable extends AbstractTableModel {
         boolean isPList = true;
         Product p = null;
         Order o = null;
+
         try {
             p = (Product) datalist.get(row);
 
