@@ -11,7 +11,7 @@ public class Order {
     private Customer c;
     private String orderDate;
     private int noOfitems = 0;
-    private ArrayList<Product> products;
+    private ArrayList<Product> products = new ArrayList<Product>();
     private boolean dispatched;
 
     //Constructor
@@ -22,7 +22,7 @@ public class Order {
         this.setC(c);
         this.setOrderTotal(orderTotal);
         this.setOrderDate(new SimpleDateFormat("MM/dd/yyyy").format(Calendar.getInstance().getTime()));
-        this.products = new ArrayList<>();
+
         this.products.addAll(products);
         this.setDispatched(false);
     }

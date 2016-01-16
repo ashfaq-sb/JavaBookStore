@@ -10,7 +10,7 @@ import static com.ash.ood.MainMenu.addComp;
 @SuppressWarnings("serial")
 public class OrderPanel extends JPanel implements ActionListener {
 
-    public static OrderHandler oh;
+    public static OrderHandler oh = new OrderHandler();
     static DefaultListModel<String> oListModel;
     private JList<String> oList;
     private JScrollPane spOList, otsPane, ptsPane, spTextPane;
@@ -32,7 +32,7 @@ public class OrderPanel extends JPanel implements ActionListener {
         this.gbl = new GridBagLayout();
         this.orderTable = new JTable();
         this.productTable = new JTable();
-        oh = new OrderHandler();
+
         this.ptsPane = new JScrollPane(oList);
         this.spOList = new JScrollPane(oList);
         ptsPane.setViewportView(productTable);
@@ -83,9 +83,9 @@ public class OrderPanel extends JPanel implements ActionListener {
     public void fillOrderTable() {
         // Custom Table Model
         tableModel = new DefaultTableModel();
-        tableModel.setColumnIdentifiers(new String[]{"OrderNo.", "Total Items", "Order Date", "Total Cost",
+        tableModel.setColumnIdentifiers(new String[]{"OrderNo.", "Total Items", "Order Date", "Total Cost", "",
                 "Customer Name", "Customer Address"});
-        tableModel.addRow(OrderPanel.oh.getProductDetails().split(" "));
+        tableModel.addRow(oh.getProductDetails().split(" "));
         tableModel.fireTableDataChanged();
         orderTable.setModel(tableModel);
         orderTable.revalidate();
@@ -93,13 +93,39 @@ public class OrderPanel extends JPanel implements ActionListener {
     }
 
     public void createInvoice() {
-        String products = "";
+        final String[] products = {""};
 //        for(Order o: OrderPanel.oh.object) {
 //
 //           products =""+o.getPDetails().;
 //        }
+        if (oh.object.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No orders Added yet");
 
-        this.invoice.setText("" + products + oh.getPDetails());
+        } else {
+            //oh.getOrder().getProducts().forEach(products2 -> {
+
+            int id = 0;
+            try {
+                id = Integer.parseInt((String) this.getOrderTable().getValueAt(this.getOrderTable().getSelectedRow(), 0));
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+            Order o = oh.getOrderbyId(id - 1);
+
+            //  " | " + " " + prod.productDetails() + " | " + prod.getCost() + " | " + prod.getCat()
+            String s = "";
+            for (Product p : o.getProducts()
+                    ) {
+
+                s = s + p.productDetails().replace(" ", ",") + "," + p.getCat() + "\n";
+                invoice.setText(s);
+            }
+
+
+            // } );
+            //.replace(" ","\t"));
+
+        }
 
     }
 
@@ -107,14 +133,25 @@ public class OrderPanel extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == refresh) {
-
+            try {
             //fill table
             fillOrderTable();
-
+                tableModel.fireTableDataChanged();
+                orderTable.revalidate();
+                orderTable.repaint();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "No orders Added yet");
+                System.out.println(ex);
+            }
         }
         if (e.getSource() == showOrderDetails) {
+
             createInvoice();
+            System.out.println(getOrderTable().getSelectedColumn());
+
         }
+
+
 
     }
 }

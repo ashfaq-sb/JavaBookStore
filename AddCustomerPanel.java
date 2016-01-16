@@ -12,7 +12,7 @@ public class AddCustomerPanel extends JPanel {
     private JTextField cNameTxt, cAddressTxt, cardNoTxt, expiryDateTxt;
     private JButton submitBtn, clearBtn;
     private GridBagLayout gbl;
-    private ArrayList<Product> pids;
+    private ArrayList<Product> pInOrder;
     private OrderHandler oHandler;
     private int items;
     private double orderTotal;
@@ -22,7 +22,7 @@ public class AddCustomerPanel extends JPanel {
         //this.getoHandler();
     }
 
-    public AddCustomerPanel(JInternalFrame iframe, ArrayList<Product> pids, double orderTotal, int items) {
+    public AddCustomerPanel(JInternalFrame iframe, double orderTotal, int items) {
         this.gbl = new GridBagLayout();
         this.cNameLbl = new JLabel("Name: ");
         this.cAddressLbl = new JLabel("Address: ");
@@ -38,7 +38,7 @@ public class AddCustomerPanel extends JPanel {
         this.submitBtn = new JButton("Submit Order");
         this.clearBtn = new JButton("Clear");
         this.oHandler = new OrderHandler();
-        this.pids = pids;
+        //this.pids = pids;
         this.items = items;
         setLayout(gbl);
         setSize(400, 400);
@@ -65,9 +65,12 @@ public class AddCustomerPanel extends JPanel {
                 cardNo = cardNoTxt.getText();
                 expiryDate = expiryDateTxt.getText();
                 Customer c = new Customer(cName, cAddress, cardNo, expiryDate);
-                // Order o = new Order(this.orderTotal, c,this.items,this.pids);
-                OrderPanel.oh.addObject(new Order(this.getOrderTotal(), c, this.getItems(), this.getPids()));
-                OrderPanel.oListModel.addElement(OrderPanel.oh.getOrder().getOrderDetails());
+                Order o = new Order(this.orderTotal, c, this.items, MakeOrderPanel.orderList);
+                OrderPanel.oh.addObject(o);
+                for (int i = 0; i < MakeOrderPanel.orderList.size(); i++) {
+                    MakeOrderPanel.orderList.remove(i);
+                }
+                //  OrderPanel.oListModel.addElement(OrderPanel.oh.getOrder().getOrderDetails());
                 try {
                     clearTextFields();
                     iframe.setClosed(true);
@@ -254,23 +257,7 @@ public class AddCustomerPanel extends JPanel {
         this.gbl = gbl;
     }
 
-    /**
-     * @return the pids
-     */
-    public ArrayList<Product> getPids() {
-        return pids;
-    }
 
-    /**
-     * @param pids the pids to set
-     */
-    public void setPids(ArrayList<Product> pids) {
-        this.pids = pids;
-    }
-
-    /**
-     * @return the oHandler
-     */
     public OrderHandler getoHandler() {
         return oHandler;
     }

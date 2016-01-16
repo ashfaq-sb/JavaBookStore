@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class MakeOrderPanel extends JPanel {
 
     public static boolean check = false;
+    public static ArrayList<Product> orderList;
     javax.swing.JDesktopPane desktop;
     int c = 0;
     private JList<String> pList, oList;
@@ -18,7 +19,6 @@ public class MakeOrderPanel extends JPanel {
     private JTable table;
     private JButton addBtn, removeBtn, clearBtn, checkoutBtn;
     private JLabel totalLbl;
-    private ArrayList<Product> orderList;
     private double orderTotal;
     private OrderHandler pHandler;
 
@@ -49,7 +49,7 @@ public class MakeOrderPanel extends JPanel {
         oList.setBorder(border2);
 
 
-        orderList = new ArrayList<>();
+        orderList = new ArrayList<Product>();
         addBtn.addActionListener(e -> {
 
             if (table != null && !pHandler.object.isEmpty()) {
@@ -63,12 +63,13 @@ public class MakeOrderPanel extends JPanel {
 
                     c++;
                     Product prod = pHandler.getProductById(id - 1);
+                    orderList.add(prod);
                     oListModel.addElement(c + " | " + " " + prod.productDetails() + " | " + prod.getCost() + " | " + prod.getCat());
                     //System.out.println(s);
                     String sid = (String) table.getValueAt(table.getSelectedRow(), 0);
                     int pid = Integer.parseInt(sid);
 
-                    orderList.add(pHandler.getProductById(id - 1));
+                    // orderList.add(pHandler.getProductById(id - 1));
                     id = 0;
 
                     oList.setModel(oListModel);
@@ -122,7 +123,12 @@ public class MakeOrderPanel extends JPanel {
             //Customer panel
             //AddCustomerPanel panel = new AddCustomerPanel(orderList,orderTotal,c); // create new panel
             JInternalFrame of = new JInternalFrame("ASD");
-            of.setContentPane(new AddCustomerPanel(of, orderList, orderTotal, c));
+            of.setContentPane(new AddCustomerPanel(of, orderTotal, c));
+
+            for (Product p : MakeOrderPanel.orderList) {
+
+                JOptionPane.showMessageDialog(null, p.productDetails() + "\n");
+            }
 
 
             desktop.add(of);
@@ -132,4 +138,5 @@ public class MakeOrderPanel extends JPanel {
             of.setResizable(true);
         }
     }
+    //public
 }
