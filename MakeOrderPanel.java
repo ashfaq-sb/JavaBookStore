@@ -125,10 +125,10 @@ public class MakeOrderPanel extends JPanel {
             JInternalFrame of = new JInternalFrame("ASD");
             of.setContentPane(new AddCustomerPanel(of, orderTotal, c));
 
-            for (Product p : MakeOrderPanel.orderList) {
-
-                JOptionPane.showMessageDialog(null, p.productDetails() + "\n");
-            }
+//            for (Product p : MakeOrderPanel.orderList) {
+//
+//                JOptionPane.showMessageDialog(null, p.productDetails() + "\n");
+//            }
 
 
             desktop.add(of);
